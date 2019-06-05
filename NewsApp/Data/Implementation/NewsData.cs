@@ -32,6 +32,12 @@ namespace NewsApp.Data.Implementation
                 url += $"&category=general";
             }
 
+            //Set search query
+            if (!string.IsNullOrEmpty(settingsModel.SearchText))
+            {
+                url += $"&q={settingsModel.SearchText.ToLower()}";
+            }
+
             //Set Country
             url += $"&country={CountryAbbreviation(settingsModel.Country)}";
 
@@ -59,7 +65,10 @@ namespace NewsApp.Data.Implementation
 
             NewsModel newsModel = JsonConvert.DeserializeObject<NewsModel>(html);
 
-            Title = newsModel.Articles[0].Title;
+            if (newsModel.Articles.Length != 0)
+            {
+                Title = newsModel.Articles[0].Title;
+            }
 
             return newsModel;
         }
